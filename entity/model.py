@@ -6,8 +6,6 @@ from datetime import datetime
 class User(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
-    begin_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime)
     created_date = db.Column(db.DateTime)
     updated_date = db.Column(db.DateTime)
     deleted_date = db.Column(db.DateTime)
@@ -17,6 +15,21 @@ class User(db.Model):
     username = db.Column(db.String(225))
     email = db.Column(db.String(225), unique=True)
     notlp = db.Column(db.String(225))
-    jenis_kelamin = db.Column(db.String(225))
+    gender = db.Column(db.Integer)
     avatar = db.Column(db.Text)
     password = db.Column(db.String(225))
+
+
+class SystemConfig(db.Model):
+    __tablename__ = "system_config"
+    id = db.Column(db.Integer, primary_key=True)
+    begin_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)
+    created_date = db.Column(db.DateTime)
+    updated_date = db.Column(db.DateTime)
+    deleted_date = db.Column(db.DateTime)
+    created_by = db.Column(db.Integer)
+    updated_by = db.Column(db.Integer)
+    company_id = db.Column(db.Integer)
+    key = db.Column(db.String(255))
+    value = db.Column(db.String(255))

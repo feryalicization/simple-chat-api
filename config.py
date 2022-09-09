@@ -5,7 +5,7 @@ class Config(object):
     forwarded_allow_ips = '*'
     secure_scheme_headers = {'X-Forwarded-Proto': 'https'}
 
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:feryganteng1234@localhost:5432/simple-chat'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_POOL_SIZE = 30
