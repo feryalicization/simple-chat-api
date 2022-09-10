@@ -48,6 +48,9 @@ class Chat(db.Model):
     from_id = db.Column(db.Integer)
     to_id = db.Column(db.Integer)
     is_reply = db.Column(db.Boolean, default=False)
+    reply_for = db.Column(db.Integer)
+    is_reply_message = db.Column(db.Boolean, default=False)
+
     
 
 

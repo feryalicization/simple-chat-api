@@ -90,11 +90,11 @@ class CreateChatController(Resource):
 
 
     
-@api.route('/list-conversation')
+@api.route('/list-conversation/<int:receiverId>')
 @api.doc(params=auth_header)
 class ListConversationController(Resource):
     @staticmethod
-    def get():
+    def get(receiverId):
         token = None
         if 'token' in request.headers:
             token = request.headers['token']
@@ -112,5 +112,5 @@ class ListConversationController(Resource):
 
         user_id = check_token['id']
 
-        data = list_conversation(user_id)
+        data = list_conversation(user_id, receiverId)
         return data
