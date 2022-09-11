@@ -61,18 +61,24 @@ def Create(param, user_id):
 
 
 def chat_list_user(user_id):
-    data = []
-    query = db.session.query(User.id.label('userId'), User.full_name)\
-        .join(Chat, Chat.to_id == User.id)\
-        .filter(Chat.from_id == user_id).group_by(User.id).all()
+    try:
+        data = []
+        query = db.session.query(User.id.label('userId'), User.full_name)\
+            .join(Chat, Chat.to_id == User.id)\
+            .filter(Chat.from_id == user_id).group_by(User.id).all()
 
-    for x in query:
-        data.append({
-            'id': x.userId,
-            'fullName': x.full_name,
-        })
+        for x in query:
+            data.append({
+                'id': x.userId,
+                'fullName': x.full_name,
+            })
+            
 
-    return data
+        return jsonify({'code': '1', 'msg': 'Get Data Success!', 'data': data})
+    except sqlalchemy.exc.DataError:
+        return jsonify({'msg': 'Get Data Failed', 'code': '-1'})
+    except sqlalchemy.exc.IntegrityError as err:
+        return jsonify({'msg': str(err.__cause__), 'code': '-1'})
 
 
 
