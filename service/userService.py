@@ -109,38 +109,33 @@ def create_user(param, current_user):
     except sqlalchemy.exc.IntegrityError as err:
         return jsonify({'msg': str(err.__cause__), 'code': '-1'})
 
-
-
+ 
+from bcrypt import hashpw
 
 def login(param):
     try:
         username = param['userName']
         password = param['password']
+
+        query = User.query.filter_by(username=username).first()
+
+        if not query:
+            return 'Username not found'
         
+        if query.password == hashpw(password.encode('UTF_8'), query.password.encode('UTF_8')).decode():
 
-        query = db.session.query(User)\
-            .filter(User.username==username)\
-            .filter(User.password==password).first()
+            token = jwt.encode(
+                    {'id': query.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1440)},
+                    secrets)
 
-        if query:
-            print(query)
+            a = codecs.decode(token, 'UTF-8')
+            token_user = a.replace('b', '')
+            token_user = a.replace("'", "")
             
-            
-           
-            user = db.session.query(User.id,User.username).filter(User.username == query.username)
-            for x in user:
-             
-
-                token = jwt.encode(
-                        {'id': x.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1440)},
-                        secrets)
-          
-
-                a = codecs.decode(token, 'UTF-8')
-                token_user = a.replace('b', '')
-                token_user = a.replace("'", "")
-
-        return jsonify({'code': '1', 'msg': 'Login success!', 'data': f'{token_user}'})
+            return jsonify({'code': '1', 'msg': 'Login success!', 'token': f'{token_user}'})
+        else:
+            return 'Wrong password'
+        
     except sqlalchemy.exc.DataError:
         return jsonify({'msg': 'Failed to Login!', 'code': '-1'})
     except sqlalchemy.exc.IntegrityError as err:

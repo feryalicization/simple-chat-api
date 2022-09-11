@@ -1,4 +1,5 @@
-import os
+
+
 
 
 class Config(object):
@@ -13,3 +14,5 @@ class Config(object):
     SQLALCHEMY_POOL_RECYCLE = 10  # max connection idle
     SQLALCHEMY_MAX_OVERFLOW = 50  # max in queue
     JSON_SORT_KEYS = False
+
+
